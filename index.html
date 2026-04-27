@@ -364,10 +364,9 @@
       <div class="hero-badge"><div class="hero-badge-dot"></div><span>Carolina, Puerto Rico</span></div>
       <h1 class="hero-title">TU CARRO<br>EN <span class="accent">MANOS</span><br><span class="outline">EXPERTAS</span></h1>
       <p class="hero-sub">Donde la Experiencia Habla por Sí Sola. 30 años en la Industria ofreciendo servicio mecánico profesional en Carolina, PR.</p>
-            <div class="hero-actions">
+                        <div class="hero-actions">
         <a href="#contacto" class="btn-primary">Contáctanos</a>
         <a href="#direccion" class="btn-outline">📍 Cómo Llegar</a>
-        <a href="#servicios" class="btn-ghost">Servicios</a>
       </div>
       <div class="hero-stats">
         <div><div class="stat-num">30<span>+</span></div><div class="stat-label">Años en la Industria</div></div>
@@ -859,13 +858,13 @@
 
     const texto = `Hola Professional Alignment & Repair Center 👋
 
-*Nombre:* ${nombre}
-*Teléfono:* ${telefono}
-*Vehículo:* ${vehiculo}
-*Servicio(s):* ${selectedServicios.join(', ')}
-*Mensaje:* ${mensaje || 'Sin mensaje adicional.'}
+Nombre: ${nombre}
+Teléfono: ${telefono}
+Vehículo: ${vehiculo}
+Servicio(s):  ${selectedServicios.join(', ')}
+Mensaje:  ${mensaje || 'Sin mensaje adicional.'}
 
-_Mensaje enviado desde el website._`;
+*Mensaje enviado desde el website.`;
 
     const url = 'https://wa.me/17872140008?text=' + encodeURIComponent(texto);
     window.open(url, '_blank');
