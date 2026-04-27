@@ -858,13 +858,13 @@
 
     const texto = `Hola Professional Alignment & Repair Center 👋
 
-Nombre: ${nombre}
-Teléfono: ${telefono}
-Vehículo: ${vehiculo}
-Servicio(s):  ${selectedServicios.join(', ')}
-Mensaje:  ${mensaje || 'Sin mensaje adicional.'}
+*Nombre:* ${nombre}
+*Teléfono:* ${telefono}
+*Vehículo:* ${vehiculo}
+*Servicio(s):*  ${selectedServicios.join(', ')}
+*Mensaje:*  ${mensaje || 'Sin mensaje adicional.'}
 
-*Mensaje enviado desde el website.`;
+*Mensaje enviado desde el website.*`;
 
     const url = 'https://wa.me/17872140008?text=' + encodeURIComponent(texto);
     window.open(url, '_blank');
