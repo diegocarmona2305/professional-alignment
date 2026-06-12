@@ -608,61 +608,102 @@ const currentYear = new Date().getFullYear();
 const anos = Array.from({length: currentYear - 1979}, (_, i) => String(currentYear - i));
 let selectedServicios = [];
 
-function showDrop(id) { const el = document.getElementById(id); if (el && el.innerHTML.trim()) el.classList.add('open'); }
-function hideDrop(id) { setTimeout(() => { const el = document.getElementById(id); if (el) el.classList.remove('open'); }, 200); }
+// ── DROPDOWN HELPERS ──────────────────────────────────────────
+function showDrop(id) {
+  const el = document.getElementById(id);
+  if (el && el.innerHTML.trim()) el.classList.add('open');
+}
+function hideDrop(id) {
+  setTimeout(function() {
+    const el = document.getElementById(id);
+    if (el) el.classList.remove('open');
+  }, 200);
+}
 
-function renderOptions(ddId, items, onSelect, query) {
+function renderDrop(ddId, items, query, onClickFn) {
   const dd = document.getElementById(ddId);
   if (!items.length) { dd.classList.remove('open'); return; }
-  dd.innerHTML = items.slice(0,8).map(item => {
-    const h = query ? item.replace(new RegExp('('+query+')','gi'),'<strong></strong>') : item;
-    return '<div class="ac-option" onmousedown="('+onSelect.toString()+")('"+ item.replace(/'/g,"\'") +"')\">" + h + '</div>';
+  dd.innerHTML = items.slice(0, 8).map(function(item) {
+    var display = item;
+    if (query && query.length > 0) {
+      var pos = item.toLowerCase().indexOf(query.toLowerCase());
+      if (pos !== -1) {
+        display =
+          item.slice(0, pos) +
+          '<strong style="color:#fff;">' + item.slice(pos, pos + query.length) + '</strong>' +
+          item.slice(pos + query.length);
+      }
+    }
+    return '<div class="ac-option" onmousedown="' + onClickFn + '(this)" data-value="' + item.replace(/"/g, '&quot;') + '">' + display + '</div>';
   }).join('');
   dd.classList.add('open');
 }
 
+// ── MARCA ────────────────────────────────────────────────────
 function filterMarcas(val) {
   const f = allMarcas.filter(m => m.toLowerCase().includes(val.toLowerCase()));
-  renderOptions('dd-marca', f, selectMarca, val);
+  renderDrop('dd-marca', f, val, 'pickMarca');
   document.getElementById('form-modelo').value = '';
   document.getElementById('form-modelo').disabled = true;
+  document.getElementById('form-modelo').placeholder = 'Selecciona la marca primero...';
 }
-function selectMarca(val) {
+function pickMarca(el) {
+  const val = el.getAttribute('data-value');
   document.getElementById('form-marca').value = val;
   document.getElementById('dd-marca').classList.remove('open');
   const mi = document.getElementById('form-modelo');
-  mi.disabled = false; mi.placeholder = 'Escribe o selecciona el modelo...';
-  mi.focus(); filterModelos('');
+  mi.disabled = false;
+  mi.placeholder = 'Escribe o selecciona el modelo...';
+  mi.focus();
+  filterModelos('');
 }
+
+// ── MODELO ───────────────────────────────────────────────────
 function filterModelos(val) {
   const marca = document.getElementById('form-marca').value;
   const modelos = vehicleData[marca] || [];
   const f = val ? modelos.filter(m => m.toLowerCase().includes(val.toLowerCase())) : modelos;
-  renderOptions('dd-modelo', f, selectModelo, val);
+  renderDrop('dd-modelo', f, val, 'pickModelo');
 }
-function selectModelo(val) { document.getElementById('form-modelo').value = val; document.getElementById('dd-modelo').classList.remove('open'); }
+function pickModelo(el) {
+  document.getElementById('form-modelo').value = el.getAttribute('data-value');
+  document.getElementById('dd-modelo').classList.remove('open');
+}
+
+// ── AÑO ─────────────────────────────────────────────────────
 function filterAnos(val) {
-  const f = val ? anos.filter(a => a.startsWith(val)) : anos.slice(0,8);
-  renderOptions('dd-ano', f, selectAno, val);
+  const f = val ? anos.filter(a => a.startsWith(val)) : anos.slice(0, 8);
+  renderDrop('dd-ano', f, val, 'pickAno');
 }
-function selectAno(val) { document.getElementById('form-ano').value = val; document.getElementById('dd-ano').classList.remove('open'); }
+function pickAno(el) {
+  document.getElementById('form-ano').value = el.getAttribute('data-value');
+  document.getElementById('dd-ano').classList.remove('open');
+}
+
+// ── SERVICIOS ────────────────────────────────────────────────
 function filterServicios(val) {
   const av = serviciosList.filter(s => !selectedServicios.includes(s) && s.toLowerCase().includes(val.toLowerCase()));
-  renderOptions('dd-servicio', av, addServicio, val);
+  renderDrop('dd-servicio', av, val, 'pickServicio');
 }
-function addServicio(val) {
+function pickServicio(el) {
+  const val = el.getAttribute('data-value');
   if (selectedServicios.includes(val)) return;
   selectedServicios.push(val);
   document.getElementById('form-servicio-input').value = '';
-  renderTags(); filterServicios('');
+  document.getElementById('dd-servicio').classList.remove('open');
+  renderTags();
 }
-function removeServicio(val) { selectedServicios = selectedServicios.filter(s => s !== val); renderTags(); }
+function removeServicio(val) {
+  selectedServicios = selectedServicios.filter(s => s !== val);
+  renderTags();
+}
 function renderTags() {
   document.getElementById('servicios-tags').innerHTML = selectedServicios.map(s =>
-    '<div class="svc-tag">'+s+'<button type="button" onmousedown="removeServicio(\''+s+'\')">×</button></div>'
+    '<div class="svc-tag">' + s + '<button type="button" onmousedown="removeServicio('' + s.replace(/'/g, "\'") + '')">×</button></div>'
   ).join('');
 }
 
+// ── ENVIAR POR INSTAGRAM DM ───────────────────────────────────
 function enviarMensaje() {
   const nombre   = document.getElementById('form-nombre').value.trim();
   const telefono = document.getElementById('form-telefono').value.trim();
@@ -671,8 +712,8 @@ function enviarMensaje() {
   const ano      = document.getElementById('form-ano').value.trim();
   const mensaje  = document.getElementById('form-mensaje').value.trim();
 
-  if (!nombre) { mostrarError('Por favor ingresa tu nombre.'); document.getElementById('form-nombre').focus(); return; }
-  if (!telefono) { mostrarError('Por favor ingresa tu teléfono.'); document.getElementById('form-telefono').focus(); return; }
+  if (!nombre)   { mostrarError('Por favor ingresa tu nombre.');    document.getElementById('form-nombre').focus();   return; }
+  if (!telefono) { mostrarError('Por favor ingresa tu teléfono.');  document.getElementById('form-telefono').focus(); return; }
   if (selectedServicios.length === 0) { mostrarError('Por favor selecciona al menos un servicio.'); return; }
 
   const vehiculo = [marca, modelo, ano].filter(Boolean).join(' ') || 'No especificado';
@@ -681,64 +722,67 @@ function enviarMensaje() {
     'Nombre: ' + nombre + '\n' +
     'Teléfono: ' + telefono + '\n' +
     'Vehículo: ' + vehiculo + '\n' +
-    'Servicio(s): ' + selectedServicios.join(', ') + '\n' +
-    (mensaje ? 'Mensaje: ' + mensaje : '') +
+    'Servicio(s): ' + selectedServicios.join(', ') +
+    (mensaje ? '\nMensaje: ' + mensaje : '') +
     '\n\n_Enviado desde professional-alignment.vercel.app_';
 
-  const url = 'https://ig.me/m/professional.alignment?text=' + encodeURIComponent(texto);
-  window.open(url, '_blank');
+  window.open('https://ig.me/m/professional.alignment?text=' + encodeURIComponent(texto), '_blank');
 
-  // Mostrar confirmación
   document.getElementById('btn-enviar').style.display = 'none';
-  const success = document.getElementById('msg-success');
-  success.style.display = 'flex';
+  document.getElementById('msg-success').style.display = 'flex';
 
-  // Limpiar form
-  ['form-nombre','form-telefono','form-marca','form-modelo','form-ano','form-mensaje','form-servicio-input'].forEach(id => {
+  ['form-nombre','form-telefono','form-marca','form-modelo','form-ano','form-mensaje','form-servicio-input'].forEach(function(id) {
     const el = document.getElementById(id);
-    if(el) el.value = '';
+    if (el) el.value = '';
   });
   document.getElementById('form-modelo').disabled = true;
   selectedServicios = [];
   renderTags();
 
-  setTimeout(() => {
-    success.style.display = 'none';
+  setTimeout(function() {
+    document.getElementById('msg-success').style.display = 'none';
     document.getElementById('btn-enviar').style.display = 'flex';
   }, 6000);
 }
 
 function mostrarError(msg) {
   const existing = document.getElementById('form-error');
-  if(existing) existing.remove();
+  if (existing) existing.remove();
   const div = document.createElement('div');
   div.id = 'form-error';
   div.style.cssText = 'background:rgba(224,16,32,0.1);border:1px solid rgba(224,16,32,0.4);border-radius:8px;padding:10px 16px;font-size:13px;color:#f87171;margin-top:8px;';
   div.textContent = msg;
   document.getElementById('btn-enviar').insertAdjacentElement('afterend', div);
-  setTimeout(() => div.remove(), 4000);
+  setTimeout(function() { div.remove(); }, 4000);
 }
 
+// ── NAVEGACIÓN ────────────────────────────────────────────────
 function toggleMenu() { document.getElementById('mobileMenu').classList.toggle('open'); }
-function closeMenu() { document.getElementById('mobileMenu').classList.remove('open'); }
+function closeMenu()  { document.getElementById('mobileMenu').classList.remove('open'); }
 function toggleAcc(trigger) {
   const item = trigger.closest('.acc-item');
   const isOpen = item.classList.contains('open');
-  document.querySelectorAll('.acc-item.open').forEach(i => i.classList.remove('open'));
+  document.querySelectorAll('.acc-item.open').forEach(function(i) { i.classList.remove('open'); });
   if (!isOpen) item.classList.add('open');
 }
-window.addEventListener('scroll', () => {
+
+window.addEventListener('scroll', function() {
   document.getElementById('navbar').style.boxShadow = window.scrollY > 20 ? '0 4px 24px rgba(0,0,0,0.5)' : 'none';
 });
-const obs = new IntersectionObserver((entries) => {
-  entries.forEach((e,i) => { if(e.isIntersecting) setTimeout(() => e.target.classList.add('visible'), i*70); });
+
+const obs = new IntersectionObserver(function(entries) {
+  entries.forEach(function(e, i) {
+    if (e.isIntersecting) setTimeout(function() { e.target.classList.add('visible'); }, i * 70);
+  });
 }, { threshold: 0.1 });
-document.querySelectorAll('.fade-up').forEach(el => obs.observe(el));
+document.querySelectorAll('.fade-up').forEach(function(el) { obs.observe(el); });
+
 function updateStatus() {
-  const now = new Date(); const day = now.getDay(), h = now.getHours(), m = now.getMinutes(), t = h+m/60;
-  const open = (day>=1&&day<=5&&t>=8&&t<17)||(day===6&&t>=8&&t<13);
+  const now = new Date();
+  const day = now.getDay(), h = now.getHours(), m = now.getMinutes(), t = h + m / 60;
+  const open = (day >= 1 && day <= 5 && t >= 8 && t < 17) || (day === 6 && t >= 8 && t < 13);
   const badge = document.getElementById('statusBadge');
-  if(badge){ badge.textContent = open?'Abierto ahora':'Cerrado ahora'; badge.style.color = open?'#22C55E':'#EF4444'; }
+  if (badge) { badge.textContent = open ? 'Abierto ahora' : 'Cerrado ahora'; badge.style.color = open ? '#22C55E' : '#EF4444'; }
 }
 updateStatus();
 </script>
