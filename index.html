@@ -253,9 +253,9 @@
 
   /* CALL HERO CARD */
   .call-hero-card {
-    display: flex; align-items: center; gap: var(--sp5);
+    display: flex; align-items: center; gap: var(--sp4);
     background: var(--red); color: var(--white);
-    border-radius: 20px; padding: var(--sp5) var(--sp6);
+    border-radius: 20px; padding: var(--sp4) var(--sp5);
     text-decoration: none; margin-bottom: var(--sp5);
     transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
     box-shadow: 0 8px 40px rgba(224,16,32,0.4);
@@ -267,17 +267,22 @@
     background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, transparent 60%);
   }
   .call-hero-card:hover { background: var(--red2); transform: translateY(-3px); box-shadow: 0 16px 50px rgba(224,16,32,0.5); }
-  .call-hero-icon { width: 72px; height: 72px; background: rgba(255,255,255,0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-  .call-hero-text { flex: 1; }
-  .call-hero-label { font-family: var(--font-display); font-size: 12px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; opacity: 0.8; margin-bottom: 6px; }
-  .call-hero-number { font-family: 'Bebas Neue', var(--font-display); font-size: clamp(36px, 5vw, 56px); letter-spacing: 3px; line-height: 1; margin-bottom: 6px; }
-  .call-hero-sub { font-size: 13px; font-weight: 300; opacity: 0.75; }
+  .call-hero-icon { width: 60px; height: 60px; background: rgba(255,255,255,0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .call-hero-icon svg { width: 28px; height: 28px; }
+  .call-hero-text { flex: 1; min-width: 0; }
+  .call-hero-label { font-family: var(--font-display); font-size: 11px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; opacity: 0.8; margin-bottom: 4px; white-space: nowrap; }
+  .call-hero-number { font-family: 'Bebas Neue', var(--font-display); font-size: clamp(28px, 6vw, 52px); letter-spacing: 2px; line-height: 1; margin-bottom: 4px; white-space: nowrap; }
+  .call-hero-sub { font-size: 12px; font-weight: 300; opacity: 0.75; white-space: nowrap; }
   .call-hero-arrow { opacity: 0.6; flex-shrink: 0; transition: transform 0.2s, opacity 0.2s; }
+  .call-hero-arrow svg { width: 22px; height: 22px; }
   .call-hero-card:hover .call-hero-arrow { transform: translateX(6px); opacity: 1; }
 
   /* CONTACT ALT GRID */
   .contact-alt-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp3); }
-  @media(max-width:600px) { .contact-alt-grid { grid-template-columns: 1fr; } }
+  @media(max-width:600px) { 
+    .contact-alt-grid { grid-template-columns: 1fr; }
+    .call-hero-number { font-size: clamp(32px, 8vw, 44px); }
+  }
 
   /* FADE UP */
   .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.55s ease, transform 0.55s ease; }
