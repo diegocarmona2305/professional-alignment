@@ -250,6 +250,35 @@
 
 
   @keyframes spin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+
+  /* CALL HERO CARD */
+  .call-hero-card {
+    display: flex; align-items: center; gap: var(--sp5);
+    background: var(--red); color: var(--white);
+    border-radius: 20px; padding: var(--sp5) var(--sp6);
+    text-decoration: none; margin-bottom: var(--sp5);
+    transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+    box-shadow: 0 8px 40px rgba(224,16,32,0.4);
+    position: relative; overflow: hidden;
+  }
+  .call-hero-card::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, transparent 60%);
+  }
+  .call-hero-card:hover { background: var(--red2); transform: translateY(-3px); box-shadow: 0 16px 50px rgba(224,16,32,0.5); }
+  .call-hero-icon { width: 72px; height: 72px; background: rgba(255,255,255,0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .call-hero-text { flex: 1; }
+  .call-hero-label { font-family: var(--font-display); font-size: 12px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; opacity: 0.8; margin-bottom: 6px; }
+  .call-hero-number { font-family: 'Bebas Neue', var(--font-display); font-size: clamp(36px, 5vw, 56px); letter-spacing: 3px; line-height: 1; margin-bottom: 6px; }
+  .call-hero-sub { font-size: 13px; font-weight: 300; opacity: 0.75; }
+  .call-hero-arrow { opacity: 0.6; flex-shrink: 0; transition: transform 0.2s, opacity 0.2s; }
+  .call-hero-card:hover .call-hero-arrow { transform: translateX(6px); opacity: 1; }
+
+  /* CONTACT ALT GRID */
+  .contact-alt-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp3); }
+  @media(max-width:600px) { .contact-alt-grid { grid-template-columns: 1fr; } }
+
   /* FADE UP */
   .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.55s ease, transform 0.55s ease; }
   .fade-up.visible { opacity: 1; transform: translateY(0); }
@@ -470,83 +499,53 @@
   </div>
 </section>
 
-<!-- CONTACTO — EMAIL -->
+<!-- CONTACTO -->
 <section id="contacto">
   <div class="section-inner">
     <div class="section-tag">Habla con nosotros</div>
     <h2 class="section-title">CONTÁCTANOS</h2>
-    <p class="section-sub">Completa el formulario y te responderemos a la brevedad. También puedes llamarnos directamente.</p>
-    <div class="contact-grid">
-      <div class="contact-form">
-        <div class="form-title">Envíanos un mensaje</div>
-        <div class="email-note">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
-          Tu mensaje llegará directo al <strong style="color:var(--white);">&nbsp;DM de Instagram</strong>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Nombre completo</label>
-          <input type="text" id="form-nombre" class="form-input" placeholder="Tu nombre">
-        </div>
-        <div class="form-group">
-          <label class="form-label">Teléfono de contacto</label>
-          <input type="tel" id="form-telefono" class="form-input" placeholder="787-000-0000">
-        </div>
-        <div class="form-group" style="position:relative;">
-          <label class="form-label">Marca del Vehículo</label>
-          <input type="text" id="form-marca" class="form-input" placeholder="Ej. Toyota, Honda, Ford..." autocomplete="off" spellcheck="false" oninput="filterMarcas(this.value)" onfocus="showDrop('dd-marca')" onblur="hideDrop('dd-marca')">
-          <div id="dd-marca" class="ac-dropdown"></div>
-        </div>
-        <div class="form-group" style="position:relative;">
-          <label class="form-label">Modelo del Vehículo</label>
-          <input type="text" id="form-modelo" class="form-input" placeholder="Selecciona la marca primero..." autocomplete="off" spellcheck="false" oninput="filterModelos(this.value)" onfocus="showDrop('dd-modelo')" onblur="hideDrop('dd-modelo')" disabled>
-          <div id="dd-modelo" class="ac-dropdown"></div>
-        </div>
-        <div class="form-group" style="position:relative;">
-          <label class="form-label">Año del Vehículo</label>
-          <input type="text" id="form-ano" class="form-input" placeholder="Ej. 2020" autocomplete="off" spellcheck="false" oninput="filterAnos(this.value)" onfocus="showDrop('dd-ano')" onblur="hideDrop('dd-ano')" maxlength="4">
-          <div id="dd-ano" class="ac-dropdown"></div>
-        </div>
-        <div class="form-group" style="position:relative;">
-          <label class="form-label">Servicio(s) de Interés</label>
-          <input type="text" id="form-servicio-input" class="form-input" placeholder="Escribe o selecciona un servicio..." autocomplete="off" spellcheck="false" oninput="filterServicios(this.value)" onfocus="showDrop('dd-servicio')" onblur="hideDrop('dd-servicio')">
-          <div id="dd-servicio" class="ac-dropdown"></div>
-          <div id="servicios-tags" class="tags-wrap"></div>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Mensaje <span style="color:var(--chrome);font-weight:400;letter-spacing:0;">(opcional)</span></label>
-          <textarea id="form-mensaje" class="form-textarea" placeholder="Cuéntanos sobre tu vehículo o el problema que tienes..."></textarea>
-        </div>
-        <button class="btn-primary" id="btn-enviar" style="width:100%;justify-content:center;" onclick="enviarMensaje()">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
-          Enviar por Instagram
-        </button>
-        <div class="btn-success" id="msg-success">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-          ¡Mensaje enviado! Revisa tu Instagram para continuar.
-        </div>
-      </div>
+    <p class="section-sub">Llámanos directamente y te atendemos de inmediato.</p>
 
-      <div class="contact-channels">
-        <a href="tel:7874044430" class="channel-card">
-          <div class="channel-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.63A2 2 0 012 .18h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.18 6.18l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg></div>
-          <div><div class="channel-label">Llámanos</div><div class="channel-value">787-404-4430</div></div>
-        </a>
-        <a href="https://www.instagram.com/professional.alignment?igsh=MTJoNG1md2Iyamt2MQ%3D%3D&utm_source=qr" target="_blank" class="channel-card">
-          <div class="channel-icon">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#E01020" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="#E01020" stroke="none"/></svg>
-          </div>
-          <div><div class="channel-label">Instagram</div><div class="channel-value" style="font-size:14px;">@professional.alignment</div></div>
-        </a>
-        <a href="https://www.facebook.com/share/1FDsRAqjhw/?mibextid=wwXIfr" target="_blank" class="channel-card">
-          <div class="channel-icon">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="#E01020"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
-          </div>
-          <div><div class="channel-label">Facebook</div><div class="channel-value" style="font-size:13px;">Professional Alignment &amp; Repair</div></div>
-        </a>
-        <div class="info-item">
-          <div class="info-item-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
-          <div><div class="info-item-label">Horario</div><div class="info-item-value" style="font-size:13px;">Lun–Vie: 8:00am–5:00pm<br>Sábado: 8:00am–1:00pm</div></div>
+    <!-- TARJETA PRINCIPAL — TELÉFONO -->
+    <a href="tel:7874044430" class="call-hero-card">
+      <div class="call-hero-icon">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.63A2 2 0 012 .18h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.18 6.18l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+      </div>
+      <div class="call-hero-text">
+        <div class="call-hero-label">Llámanos ahora</div>
+        <div class="call-hero-number">787-404-4430</div>
+        <div class="call-hero-sub">Lun–Vie 8am–5pm &nbsp;·&nbsp; Sáb 8am–1pm</div>
+      </div>
+      <div class="call-hero-arrow">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </div>
+    </a>
+
+    <!-- CANALES SECUNDARIOS -->
+    <div class="contact-alt-grid">
+      <a href="https://www.instagram.com/professional.alignment?igsh=MTJoNG1md2Iyamt2MQ%3D%3D&utm_source=qr" target="_blank" class="channel-card">
+        <div class="channel-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="var(--red)" stroke="none"/></svg>
         </div>
+        <div><div class="channel-label">Instagram</div><div class="channel-value" style="font-size:14px;">@professional.alignment</div></div>
+      </a>
+      <a href="https://www.facebook.com/share/1FDsRAqjhw/?mibextid=wwXIfr" target="_blank" class="channel-card">
+        <div class="channel-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="var(--red)"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+        </div>
+        <div><div class="channel-label">Facebook</div><div class="channel-value" style="font-size:13px;">Professional Alignment &amp; Repair</div></div>
+      </a>
+      <div class="channel-card" style="cursor:default;">
+        <div class="channel-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        </div>
+        <div><div class="channel-label">Dirección</div><div class="channel-value" style="font-size:13px;">Carr. #860 Km 0.1, Carolina PR</div></div>
+      </div>
+      <div class="channel-card" style="cursor:default;">
+        <div class="channel-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <div><div class="channel-label">Horario</div><div class="channel-value" style="font-size:13px;">Lun–Vie: 8:00am–5:00pm<br>Sábado: 8:00am–1:00pm</div></div>
       </div>
     </div>
   </div>
