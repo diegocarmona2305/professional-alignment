@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+::selection {
+  background-color: #E01020;
+  color: #ffffff;
+}
+
+.section-title {
+  font-family: var(--font-bebas), sans-serif;
+  letter-spacing: 0.02em;
+}
