@@ -37,7 +37,7 @@ export default function AboutPreview() {
           className="relative w-full h-80 sm:h-[26rem] overflow-hidden border border-primary/40"
         >
           <Image
-            src="/taller-foto.png"
+            src="/taller-foto-2.jpg"
             alt="Taller Professional Alignment & Repair Center"
             fill
             className="object-cover"

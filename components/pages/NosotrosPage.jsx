@@ -34,14 +34,24 @@ export default function NosotrosPage() {
             whileInView="show"
             viewport={{ once: true }}
             variants={fadeRight}
-            className="relative w-full h-80 sm:h-[26rem] overflow-hidden border border-primary/40"
+            className="grid grid-cols-1 md:grid-cols-2 gap-4"
           >
-            <Image
-              src="/taller-foto.png"
-              alt="Taller Professional Alignment & Repair Center"
-              fill
-              className="object-cover"
-            />
+            <div className="relative w-full h-80 sm:h-[26rem] overflow-hidden border border-primary/40">
+              <Image
+                src="/nosotros-1.jpg"
+                alt="Taller Professional Alignment & Repair Center"
+                fill
+                className="object-cover"
+              />
+            </div>
+            <div className="relative w-full h-80 sm:h-[26rem] overflow-hidden border border-primary/40">
+              <Image
+                src="/nosotros-2.jpg"
+                alt="Taller Professional Alignment & Repair Center"
+                fill
+                className="object-cover"
+              />
+            </div>
           </motion.div>
         </div>
       </section>

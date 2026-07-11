@@ -42,6 +42,22 @@ export default function Footer() {
         <p className="text-xs text-white/40">
           © 2026 {SITE.name}. Todos los derechos reservados.
         </p>
+
+        <a
+          href="https://fortekpr.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="group flex items-center gap-1.5 text-[11px] text-white/40 hover:text-primary transition-colors"
+        >
+          <Image
+            src="/fortek-logo-mini.png"
+            alt="ForTek PR"
+            width={20}
+            height={20}
+            className="h-4 w-auto opacity-60 group-hover:opacity-100 transition-opacity"
+          />
+          Diseñado por ForTek PR
+        </a>
       </div>
     </footer>
   );
